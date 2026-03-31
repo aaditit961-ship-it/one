@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import EventModal from './components/EventModal';
 import TaskPanel from './components/TaskPanel';
 
