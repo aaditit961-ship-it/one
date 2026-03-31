@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>TimeFlow | Temporal Engine</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&amp;family=Space+Grotesk:wght@300;500;700&amp;family=JetBrains+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary": "#370096",
+            "secondary": "#bdf4ff",
+            "surface-container-high": "#292a2c",
+            "surface-container-lowest": "#0d0e10",
+            "inverse-on-surface": "#303032",
+            "on-surface-variant": "#cac4d0",
+            "primary": "#e9ddff",
+            "surface-tint": "#d0bcff",
+            "tertiary-container": "#cdbdff",
+            "error-container": "#93000a",
+            "on-error-container": "#ffdad6",
+            "surface-variant": "#343537",
+            "primary-fixed-dim": "#d0bcff",
+            "on-secondary-container": "#00616d",
+            "on-secondary-fixed": "#001f24",
+            "on-error": "#690005",
+            "on-primary": "#37265e",
+            "on-primary-fixed-variant": "#4d3d76",
+            "error": "#ffb4ab",
+            "on-primary-container": "#594983",
+            "on-primary-fixed": "#210f48",
+            "tertiary-fixed": "#e8deff",
+            "surface": "#121315",
+            "on-tertiary-fixed": "#20005f",
+            "surface-bright": "#38393b",
+            "secondary-fixed": "#9cf0ff",
+            "on-tertiary-fixed-variant": "#4f00d0",
+            "outline-variant": "#49454f",
+            "primary-container": "#d0bcff",
+            "surface-dim": "#121315",
+            "tertiary": "#e7ddff",
+            "background": "#121315",
+            "surface-container-highest": "#343537",
+            "outline": "#948f9a",
+            "on-secondary-fixed-variant": "#004f58",
+            "secondary-container": "#00e3fd",
+            "surface-container-low": "#1b1c1e",
+            "secondary-fixed-dim": "#00daf3",
+            "on-background": "#e3e2e4",
+            "inverse-primary": "#665590",
+            "on-surface": "#e3e2e4",
+            "primary-fixed": "#e9ddff",
+            "tertiary-fixed-dim": "#cdbdff",
+            "on-secondary": "#00363d",
+            "inverse-surface": "#e3e2e4",
+            "on-tertiary-container": "#5b1fde",
+            "surface-container": "#1f2022"
+          },
+          fontFamily: {
+            "headline": ["Inter"],
+            "body": ["Inter"],
+            "label": ["Space Grotesk"],
+            "mono": ["JetBrains Mono"]
+          },
+          borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+        },
+      },
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      line-height: 1;
+    }
+    .glass-panel {
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(24px);
+      box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+    }
+    .mesh-gradient {
+      background: radial-gradient(circle at 0% 0%, rgba(208, 188, 255, 0.15) 0%, transparent 40%),
+                  radial-gradient(circle at 100% 100%, rgba(0, 227, 253, 0.1) 0%, transparent 40%);
+    }
+    .scanline {
+      background: linear-gradient(to bottom, transparent 50%, rgba(255, 255, 255, 0.02) 50%);
+      background-size: 100% 4px;
+    }
+    .active-glow {
+      filter: drop-shadow(0 0 8px #d0bcff);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body overflow-hidden selection:bg-primary-container selection:text-on-primary-container">
+<!-- Atmospheric Background -->
+<div class="fixed inset-0 z-0 mesh-gradient pointer-events-none"></div>
+<div class="fixed inset-0 z-0 scanline pointer-events-none opacity-30"></div>
+<!-- TopAppBar Execution -->
+<header class="fixed top-0 left-0 w-full z-[60] flex items-center justify-between px-6 bg-transparent backdrop-blur-2xl h-16 shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)]">
+<div class="flex items-center gap-8">
+<div class="text-2xl font-black tracking-tighter text-[#D0BCFF] drop-shadow-[0_0_8px_rgba(208,188,255,0.4)] uppercase">
+        TimeFlow
+      </div>
+<nav class="hidden md:flex items-center gap-6">
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm md:text-base text-[#D0BCFF] border-b-2 border-[#D0BCFF] pb-1 hover:scale-105 transition-transform duration-200 ease-out" href="#">Timeline</a>
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm md:text-base text-slate-400 hover:text-white transition-colors duration-300 hover:scale-105 transition-transform duration-200 ease-out" href="#">Matrix</a>
+<a class="font-['Inter'] font-black tracking-tighter uppercase text-sm md:text-base text-slate-400 hover:text-white transition-colors duration-300 hover:scale-105 transition-transform duration-200 ease-out" href="#">Nodes</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#D0BCFF] p-2 hover:scale-110 transition-transform">account_tree</button>
+<button class="material-symbols-outlined text-[#D0BCFF] p-2 hover:scale-110 transition-transform">notifications_active</button>
+<div class="w-8 h-8 rounded-full overflow-hidden border border-primary/20">
+<img class="w-full h-full object-cover" data-alt="portrait of a focused professional looking thoughtfully off-camera, cinematic lighting, dark background, blue and purple tones" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBd3pOa2CqtuGuj6hl0Z8rjSn5e2xJI9hb63kdSqXrNJSBWxteMHGaTxjNLxVb80jSzoQW_5RS2G4TxqAkv-VNlmA2mB_QRzfMZflCcuuEflENC1qvrtL_VCnL8f3ftvgfsdIm_0pK_0ta3vM-ZE-rf_ofpxuT-tPI-zKR4OGUdFR0v9cNu4A2yfImBoNYq0AaoRt3AnuJlygMMhqxaCRx2AhV4ggXJv0Py1LvCJM-VMaJtONap2Fv4Bfs8m6n7r1sp0ILBq2G-vwPs"/>
+</div>
+</div>
+</header>
+<!-- SideNavBar Execution -->
+<aside class="fixed left-0 top-0 bottom-0 z-50 flex flex-col py-8 overflow-hidden bg-[#121315]/80 backdrop-blur-3xl fixed left-0 top-0 h-full w-20 hover:w-64 transition-all duration-400 ease-out border-r border-white/5 group">
+<div class="flex flex-col items-center group-hover:items-start px-6 mb-12">
+<div class="w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-secondary flex items-center justify-center shadow-[0_0_20px_rgba(208,188,255,0.3)] shrink-0">
+<span class="material-symbols-outlined text-on-tertiary" style="font-variation-settings: 'FILL' 1;">blur_on</span>
+</div>
+<div class="hidden group-hover:block ml-4 overflow-hidden">
+<div class="font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px] text-primary whitespace-nowrap">Aether Orb</div>
+<div class="text-[8px] text-secondary opacity-60 whitespace-nowrap uppercase tracking-tighter">System Active</div>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-4 px-3">
+<a class="flex items-center gap-4 p-3 bg-white/10 text-[#D0BCFF] rounded-lg shadow-[0_0_15px_rgba(208,188,255,0.2)] hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl" style="font-variation-settings: 'FILL' 1;">calendar_today</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Aether</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-[#D0BCFF] hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl">go_to_line</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Flow</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-[#D0BCFF] hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl">inventory_2</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Archive</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-[#D0BCFF] hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl">analytics</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Metrics</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-[#D0BCFF] hover:bg-white/5 hover:translate-x-1 transition-all" href="#">
+<span class="material-symbols-outlined text-2xl">settings_input_component</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Settings</span>
+</a>
+</nav>
+<div class="px-3 mt-auto flex flex-col gap-2">
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">help_outline</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Help</span>
+</a>
+<a class="flex items-center gap-4 p-3 text-slate-500 hover:text-white transition-all" href="#">
+<span class="material-symbols-outlined">sensors</span>
+<span class="hidden group-hover:block font-['Space_Grotesk'] font-bold tracking-widest uppercase text-[10px]">Status</span>
+</a>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="pl-20 pt-16 h-screen flex overflow-hidden">
+<!-- Center Calendar Section -->
+<section class="flex-1 flex flex-col h-full bg-surface-container-low/30 p-6 overflow-y-auto custom-scrollbar">
+<!-- Calendar Header Controls -->
+<div class="flex items-center justify-between mb-8">
+<div class="flex items-center gap-4">
+<h1 class="text-4xl font-headline font-black tracking-tighter uppercase text-on-surface">
+            October <span class="text-primary/50">2024</span>
+</h1>
+<div class="flex gap-2">
+<button class="p-2 glass-panel rounded-lg hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">chevron_left</span>
+</button>
+<button class="p-2 glass-panel rounded-lg hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</button>
+</div>
+</div>
+<div class="glass-panel p-1 rounded-xl flex gap-1">
+<button class="px-6 py-2 text-[10px] font-label font-bold tracking-widest uppercase rounded-lg transition-all bg-primary-container text-on-primary-container shadow-lg shadow-primary/20">Month</button>
+<button class="px-6 py-2 text-[10px] font-label font-bold tracking-widest uppercase rounded-lg transition-all text-on-surface/60 hover:text-on-surface">Week</button>
+<button class="px-6 py-2 text-[10px] font-label font-bold tracking-widest uppercase rounded-lg transition-all text-on-surface/60 hover:text-on-surface">Day</button>
+</div>
+</div>
+<!-- Calendar Grid -->
+<div class="flex-1 grid grid-cols-7 grid-rows-5 gap-px bg-outline-variant/10 rounded-xl overflow-hidden glass-panel relative">
+<!-- Heatmap Shimmer Overlay (Purely Decorative) -->
+<div class="absolute inset-0 pointer-events-none opacity-20 bg-gradient-to-br from-primary/10 via-transparent to-secondary/5 mix-blend-overlay"></div>
+<!-- Days Labels -->
+<div class="col-span-7 grid grid-cols-7 bg-surface-container-low py-3 border-b border-white/5">
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">SUN</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">MON</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">TUE</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">WED</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">THU</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">FRI</div>
+<div class="text-center font-label text-[10px] font-bold tracking-widest text-on-surface/40">SAT</div>
+</div>
+<!-- Day Cells (Simplified for Layout) -->
+<!-- Row 1 -->
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm opacity-20">28</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm opacity-20">29</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm opacity-20">30</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">01</span>
+<div class="mt-2 space-y-1">
+<div class="text-[10px] px-2 py-1 glass-panel rounded-md border-l-2 border-primary text-primary-fixed-dim flex items-center gap-1">
+<span class="material-symbols-outlined text-[12px]">cycle</span> Sync Core
+            </div>
+</div>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">02</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">03</span>
+<div class="mt-2 space-y-1">
+<div class="text-[10px] px-2 py-1 glass-panel rounded-md border-l-2 border-secondary text-secondary-fixed flex items-center gap-1">
+               Neural Review
+            </div>
+</div>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">04</span>
+</div>
+<!-- Row 2: Today Highlighted -->
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">05</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">06</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] border-2 border-primary/50 shadow-[inset_0_0_20px_rgba(208,188,255,0.1)] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm text-primary font-bold">07</span>
+<div class="mt-2 space-y-1">
+<div class="text-[10px] px-2 py-1 glass-panel rounded-md border-l-2 border-primary text-primary-fixed-dim active-glow">
+              Temporal Drift
+            </div>
+</div>
+<div class="absolute bottom-2 right-2 w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></div>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">08</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">09</span>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">10</span>
+<div class="mt-2 space-y-1">
+<div class="text-[10px] px-2 py-1 glass-panel rounded-md border-l-2 border-error text-error flex items-center gap-1">
+              Deadline X
+            </div>
+</div>
+</div>
+<div class="relative p-3 bg-surface/40 min-h-[120px] group hover:bg-white/5 transition-colors">
+<span class="font-mono text-sm">11</span>
+</div>
+<!-- Remaining Rows filled with empty cells for layout -->
+<div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div>
+<div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div><div class="relative p-3 bg-surface/40 min-h-[120px]"></div>
+</div>
+</section>
+<!-- Right Task Panel -->
+<aside class="w-80 h-full glass-panel border-l border-white/5 flex flex-col p-6 gap-8">
+<!-- Aether Orb Presence -->
+<div class="flex flex-col items-center justify-center p-8 glass-panel rounded-3xl relative overflow-hidden group">
+<div class="absolute inset-0 bg-gradient-to-t from-primary/10 to-transparent"></div>
+<div class="w-20 h-20 rounded-full bg-gradient-to-tr from-primary via-secondary to-primary-container flex items-center justify-center shadow-[0_0_40px_rgba(208,188,255,0.4)] animate-pulse mb-4 relative z-10">
+<span class="material-symbols-outlined text-4xl text-on-tertiary" style="font-variation-settings: 'FILL' 1;">blur_on</span>
+</div>
+<h3 class="text-xs font-label font-bold tracking-[0.2em] text-primary uppercase relative z-10">Aether System</h3>
+<p class="text-[10px] font-mono text-on-surface/40 mt-1 relative z-10">OPTIMIZING SCHEDULE...</p>
+</div>
+<!-- Quick Tasks -->
+<div class="space-y-4">
+<h4 class="text-[10px] font-label font-bold tracking-widest text-on-surface/40 uppercase">Active Nodes</h4>
+<div class="space-y-3">
+<!-- Task Item -->
+<div class="p-4 glass-panel rounded-xl group hover:translate-y-[-2px] transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-mono text-secondary">PROJECT_ZEPHYR</span>
+<span class="material-symbols-outlined text-sm text-secondary">trending_up</span>
+</div>
+<p class="text-xs font-bold text-on-surface">Architectural Audit</p>
+<div class="mt-3 flex items-center gap-2">
+<div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-secondary w-3/4 shadow-[0_0_10px_rgba(189,244,255,0.5)]"></div>
+</div>
+<span class="font-mono text-[9px] opacity-40">75%</span>
+</div>
+</div>
+<div class="p-4 glass-panel rounded-xl group hover:translate-y-[-2px] transition-all cursor-pointer">
+<div class="flex items-center justify-between mb-2">
+<span class="text-[10px] font-mono text-primary">AI_INTEGRATION</span>
+<span class="material-symbols-outlined text-sm text-primary">auto_awesome</span>
+</div>
+<p class="text-xs font-bold text-on-surface">Memory Buffer Flush</p>
+<div class="mt-3 flex items-center gap-2">
+<div class="flex-1 h-1 bg-white/5 rounded-full overflow-hidden">
+<div class="h-full bg-primary w-1/4 shadow-[0_0_10px_rgba(208,188,255,0.5)]"></div>
+</div>
+<span class="font-mono text-[9px] opacity-40">25%</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Sync CTA -->
+<button class="mt-auto w-full py-4 bg-primary-container text-on-primary-container rounded-xl font-label font-bold tracking-widest uppercase text-xs shadow-[0_0_20px_rgba(208,188,255,0.2)] hover:scale-[1.02] transition-transform active:scale-95 flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-lg">sync</span>
+        Sync Temporal Data
+      </button>
+</aside>
+</main>
+<!-- Floating Action Button (FAB) -->
+<button class="fixed bottom-8 right-8 w-16 h-16 rounded-2xl bg-primary text-on-primary shadow-[0_10px_30px_rgba(208,188,255,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all z-[70] group">
+<span class="material-symbols-outlined text-3xl transition-transform group-hover:rotate-90">add</span>
+</button>
+</body></html>
